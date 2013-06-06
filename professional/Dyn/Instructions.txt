@@ -1,0 +1,2 @@
+1) Download and install Vagrant (http://downloads.vagrantup.com/tags/v1.2.2)
+2) 
