@@ -1,2 +1,63 @@
-1) Download and install Vagrant (http://downloads.vagrantup.com/tags/v1.2.2)
-2) 
+) Solution located at https://github.com/mattdrayer/public/tree/master/professional/Dyn
+
+) Download and install GitHub/Git (/tools, or https://help.github.com/articles/set-up-git)
+
+) Download and install PuTTY (/tools, or http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
+
+) Download and install VirtualBox (/tools, or https://www.virtualbox.org/wiki/Downloads)
+
+) Download and install Vagrant (/tools, or http://downloads.vagrantup.com/tags/v1.2.2)
+
+) Clone Matt Andersen's "vagrant-lamp" Git repository onto your workstation and stand up a new Vagrant LAMP instance:
+	$ git clone http://www.github.com/mattandersen/vagrant-lamp
+	$ cd vagrant-lamp
+	$ vagrant up
+
+[*** Go get a drink/snack ***]
+
+) Extract the contents of CheckIp.zip into vagrant-lamp/htdocs
+
+) Open PuTTY and specify the following connection information
+	host: 127.0.0.1
+	port: 2222
+	username: vagrant
+	password: vagrant (when prompted)
+
+) Change your location to /var/www and ls -la to confirm your local htdocs folder is linked to the virtual www folder
+
+) Start MySQL as root (sudo mysql -u root -p)
+
+) Enter 'root' when prompted for the password
+
+) Confirm there are only four databases available ("show databases;')
+
+) Create the CheckIpLog database using the following MySQL:
+	mysql> create database CheckIpLog;
+	mysql> use CheckIpLog;
+	mysql> CREATE TABLE RequestLog (DateRequested TIMESTAMP, IpAddress VARCHAR(15), UserAgent VARCHAR(255));
+
+) Grant permission to the 'vagrant' user for the CheckIpLog database
+	mysql> grant usage on *.* to vagrant@localhost identified by 'vagrant';
+	mysql> grant all privileges on CheckIpLog.* to vagrant@localhost;
+
+) Exit MySQL and confirm the vagrant user now has access to the database:
+	mysql> exit
+	vagrant@precise32:/var/www$ mysql -u vagrant -p'vagrant'
+	mysql> show databases; (observe CheckIpLog)
+	mysql> use CheckIpLog;
+	mysql> select * from RequestLog; (response: empty set)
+
+) Install the php5-mysql module
+	vagrant@precise32:/var/www$ sudo apt-get install php5-mysql
+
+) Open http://localhost:8888/index.php in a web browser, confirm Current IP Check executes properly
+
+) Install PHPUnit
+	vagrant@precise32:/var/www$ sudo pear download pear.phpunit.de/PHPUnit
+	vagrant@precise32:/var/www$ sudo pear install pear.phpunit.de/PHPUnit
+
+) Execute the following phpunit tests to confirm the system behaves as expected
+	vagrant@precise32:/var/www$ phpunit tests/unit/FrontControllerTest.php
+	vagrant@precise32:/var/www$ phpunit tests/unit/CheckIpControllerTest.php
+	vagrant@precise32:/var/www$ phpunit tests/unit/CheckIpModelTest.php
+	vagrant@precise32:/var/www$ phpunit tests/unit/CheckIpViewTest.php
