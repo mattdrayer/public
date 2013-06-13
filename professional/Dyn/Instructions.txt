@@ -52,6 +52,11 @@
 
 ) Open http://localhost:8888/index.php in a web browser, confirm Current IP Check executes properly
 
+) Confirm log entry has been recorded in the CheckIpLog database:
+	vagrant@precise32:/var/www$ mysql -u vagrant -p'vagrant'
+	mysql> use CheckIpLog;
+	mysql> select * from RequestLog; (response: populated set)
+
 ) Install PHPUnit
 	vagrant@precise32:/var/www$ sudo pear download pear.phpunit.de/PHPUnit
 	vagrant@precise32:/var/www$ sudo pear install pear.phpunit.de/PHPUnit
