@@ -15,7 +15,7 @@
 
 [*** Go get a drink/snack ***]
 
-) Extract the contents of CheckIp.zip into vagrant-lamp/htdocs
+) Extract the contents of htdocs.zip into vagrant-lamp/htdocs
 
 ) Open PuTTY and specify the following connection information
 	host: 127.0.0.1
